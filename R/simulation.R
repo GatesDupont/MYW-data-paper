@@ -18,8 +18,12 @@ reg_traps_100 <- st_sample(st_buffer(fence,dist = -50), size = 100, type="regula
 reg_traps_60 <- st_sample(st_buffer(fence,dist = -50), size = 60, type="regular")
 
 trap_labels <- read.csv("data/MYW_grid_cam_allocation.csv", header = TRUE)
-emp_traps <- read.csv("data/MYW2021_cam_op_site_effort_UTM.csv", header = TRUE)
-emp_traps <- left_join(emp_traps,trap_labels)[,c("Site","UTM_x","UTM_y","Grid_type")]
+
+emp_traps <- read.csv("data/MYW2021_cam_op_site_effort_UTM.csv", header = TRUE) %>%
+  select(-Brand, -Grid_Allocation) %>%
+  left_join(trap_labels, by = join_by(Site)) %>%
+  select(Site, UTM_x, UTM_y, Grid_type) 
+
 emp_traps_100 <- st_as_sf(emp_traps,coords = c(2,3))
 emp_traps_60 <- st_as_sf(dplyr::filter(emp_traps, Grid_type == "Leopard"),coords = c(2,3))
 

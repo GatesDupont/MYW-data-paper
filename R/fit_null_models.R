@@ -40,10 +40,10 @@ for(i in 1:n_spp){
     
     # Load species encounter file, remove traps from other design if necessary
     edf_sp <- read.csv(file = edf_file_sp) %>%
-    left_join(trap_designs) %>%
-    select(Grid_type, everything()) %>%
-    filter(Grid_type %in% traps_to_keep) %>%
-    select(-Grid_type)
+      left_join(trap_designs) %>%
+      select(Grid_type, everything()) %>%
+      filter(Grid_type %in% traps_to_keep) %>%
+      select(-Grid_type)
   
     # Set first day date
     dayone <- mdy("9-17-2021")
@@ -57,6 +57,7 @@ for(i in 1:n_spp){
  
     # Load file 
     tdf <- read.csv(file = "data/MYW2021_cam_op_site_effort_UTM.csv") %>%
+      select(-Brand, -Grid_Allocation) %>%
       left_join(trap_designs) %>%
       select(Grid_type, everything()) %>%
       filter(Grid_type %in% traps_to_keep) %>%
